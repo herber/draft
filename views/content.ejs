@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Draft</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#784BA0">
+    <link rel="stylesheet" href="https://atlas.draft.gq/content.css" />
+    <% if (markdown) { %>
+    <link rel="stylesheet" href="https://atlas.draft.gq/md.min.css" />
+    <% } %>
+  </head>
+  <body>
+    <a class="draft" href="https://draft.gq"><span class="draft-inner">Draft</span><br><span class="border">&nbsp;</span></a>  
+
+    <div class="main">
+      <h2 class="title">
+        <a class="black" href="https://draft.gq/<%= id %>"><%= description %></a>
+      </h2>
+      
+      <% if (files.length == 1 && files[0].language == "markdown") { %>
+      <div style="margin: 0px; border: none; padding: 0px" class="markdown">
+        <%- files[0].content %>
+      </div>
+      <% } else { %>
+      <% files.forEach(function(file){ %>
+      <div class="file">
+        <span class="filename"><a class="black" href="https://draft.gq/<%= id %>/<%= file.filename %>"><%= file.filename %></a></span>
+        <% if (file.language == "markdown") { %>
+        <div class="markdown">
+          <%- file.content %>
+        </div>
+        <% } else { %>
+        <div class="code">
+          <pre><code class="<%= file.language %>"><%= file.content %></code></pre>
+        </div>
+        <% } %>
+      </div>
+      <% }); %>
+      <% }  %>
+      
+      <% if (owner) { %>
+      <span class="by">by <a href="https://draft.gq/@<%= owner.login %>"><%= owner.name %></a></span>
+      <% } %>
+    </div>
+
+    <div class="footer">
+      <a href="https://draft.gq">Draft</a> - by <a href="https://twitter.com/tobihrbr">Tobias Herber</a>
+    </div>
+    
+    <% if (code) { %>
+    <link rel="stylesheet" href="https://atlas.draft.gq/hl.css">
+    <script src="https://atlas.draft.gq/hl.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <% } %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90549834-5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-90549834-5');
+    </script>
+  </body>
+</html>
