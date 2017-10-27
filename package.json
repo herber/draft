@@ -13,8 +13,6 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "node-fetch": "^1.7.3",
-    "passport": "^0.4.0",
-    "passport-github2": "^0.1.11",
     "marked": "^0.3.6",
     "memory-cache": "^0.2.0",
     "raven": "^2.2.1"
