@@ -19,9 +19,13 @@ app.get('/', (req, res) => {
 
 app.use(express.static('public'));
 
+app.get('/not-a-gist', (req, res) => {
+  res.sendFile(path.join(__dirname, './views/not-a-gist.html'));
+})
+
 app.get('/_trigger', (req, res) => {
   res.send('ok');
-})
+});
 
 app.get('/@:id', (req, res) => {
   res.redirect('https://github.com/' + req.params.id);
