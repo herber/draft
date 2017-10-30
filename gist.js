@@ -2,6 +2,14 @@ const fetch = require('node-fetch');
 const marked = require('marked');
 const cache = require('memory-cache');
 
+const renderer = new marked.Renderer();
+
+renderer.code = (code, lang) => {
+  console.log(lang);  
+  console.log(code);
+  return `<pre><code class="language-${ lang }">${ code }</code></pre>`;
+};
+
 module.exports.single = (id) => (
   new Promise((resolve, reject) => {
     const c = cache.get(id);
@@ -15,9 +23,9 @@ module.exports.single = (id) => (
             return reject(body.message);
           }
         
-          if (!body.public) {
+          /*if (!body.public) {
             return reject('private');
-          }
+          }*/
         
           if (body.owner == null) {
             body.owner = false;
@@ -29,7 +37,7 @@ module.exports.single = (id) => (
             for(const file in body.files) {
               if (body.files[file].language == 'Markdown') {
                 body.markdown = true;
-                body.files[file].content = marked(body.files[file].content);
+                body.files[file].content = marked(body.files[file].content, { renderer: renderer });
               } else {
                 body.code = true;
               }
@@ -49,7 +57,7 @@ module.exports.single = (id) => (
               .then(function(res) {
                 return res.json();
               }).then(function(userbody) {
-                body.owner.name = userbody.name;
+                body.owner.name = userbody.name || body.owner.login;
                 body.markdown = false;
                 body.code = false;
 
@@ -58,7 +66,7 @@ module.exports.single = (id) => (
                 for(const file in body.files) {
                   if (body.files[file].language == 'Markdown') {
                     body.markdown = true;
-                    body.files[file].content = marked(body.files[file].content);
+                    body.files[file].content = marked(body.files[file].content, { renderer: renderer });
                   } else {
                     body.code = true;
                   }
